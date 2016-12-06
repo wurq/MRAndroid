@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MRAndroid</string>
+    <string name="crash_warning">很抱歉，程序出现异常，即将退出</string>
+</resources>
