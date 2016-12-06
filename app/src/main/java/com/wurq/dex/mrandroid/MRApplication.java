@@ -3,6 +3,8 @@ package com.wurq.dex.mrandroid;
 import android.app.Application;
 import android.content.Context;
 
+import com.wurq.dex.base.CrashHandlerL;
+
 /**
  * Created by wurongqiu on 16/12/6.
  */
