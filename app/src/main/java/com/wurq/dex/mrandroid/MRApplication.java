@@ -3,7 +3,7 @@ package com.wurq.dex.mrandroid;
 import android.app.Application;
 import android.content.Context;
 
-import com.wurq.dex.base.CrashHandlerL;
+import com.wurq.dex.base.AppProfile;
 
 /**
  * Created by wurongqiu on 16/12/6.
@@ -14,10 +14,10 @@ public class MRApplication extends Application {
         super.onCreate();
 
         Context context = getApplicationContext();
-
+        AppProfile.setContext(context);
         //崩溃捕获以及日志输出配置
         if (BuildConfig.DEBUG) {
-            CrashHandlerL.getInstance().init(context);//debug状态下使用本地崩溃捕获
+//            CrashHandlerL.getInstance().init(context);//debug状态下使用本地崩溃捕获
 
         } else {
             // crash

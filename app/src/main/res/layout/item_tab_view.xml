@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_main_tab_height"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_main_page_tab_icon"
+            android:layout_marginTop="@dimen/item_main_page_tab_title_margin_top"
+            android:layout_width="@dimen/activity_main_tab_icon_size"
+            android:layout_height="@dimen/activity_main_tab_icon_size"/>
+
+        <TextView
+            android:id="@+id/tv_main_page_tab_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/item_main_page_tab_title_margin_top"
+            android:textColor="@color/selector_main_page_tab_text_color"
+            android:textSize="@dimen/text_size_s"/>
+        <!--android:layout_marginTop=2dp", 文字自带的顶部占1dp-->
+
+    </LinearLayout>
+
+    <!--    <include layout="@layout/view_horizontal_line_1px_black_alpha30"/>-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/shadow_height"
+        android:background="@drawable/shape_shadow_divider_bottom_to_top"/>
+</FrameLayout>
