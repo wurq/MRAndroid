@@ -55,4 +55,5 @@
     <dimen name="item_main_page_tab_title_margin_top">1dp</dimen>
 
     <dimen name="shadow_height">2px</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

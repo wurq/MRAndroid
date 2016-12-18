@@ -1,19 +1,25 @@
-package com.wurq.dex.mrandroid.mainpage;
+package com.wurq.dex.mrandroid.mainpage.msg;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.wurq.dex.mrandroid.R;
+import com.wurq.dex.mrandroid.mainpage.OnFragmentInteractionListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MsgFragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link MsgFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -29,6 +35,13 @@ public class MsgFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private RecyclerView mRecyclerView;
+    private MsgAdapter mAdapter;
+
+    private List<String> mDatas = new ArrayList<String>() ;
+
+//    private View mRootView ;
 
     public MsgFragment() {
         // Required empty public constructor
@@ -65,8 +78,38 @@ public class MsgFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_msg, container, false);
+        View mRootView =  inflater.inflate(R.layout.fragment_msg, container, false);
+
+        View view =  mRootView.findViewById(R.id.rv_msg_container);
+        if (view instanceof RecyclerView) {
+
+            mRecyclerView = (RecyclerView) view;
+
+//        mRecyclerView.setHasFixedSize(true);
+
+            mDatas.add("test1");
+            mDatas.add("test2");
+
+            mAdapter = new MsgAdapter(mRootView.getContext(), mDatas);
+            mRecyclerView.setAdapter(mAdapter);
+
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(mRootView.getContext()));
+        }
+        return mRootView;
     }
+
+//    private void initContentView() {
+//
+//        mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.rv_msg_container);
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+////        mRecyclerView.setHasFixedSize(true);
+//
+//        mDatas.add(0,"test1");
+//        mDatas.add(1,"test2");
+//
+//        mAdapter = new MsgAdapter(mRootView.getContext(),mDatas);
+//        mRecyclerView.setAdapter(mAdapter);
+//    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

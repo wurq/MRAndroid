@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/loading_dot_right">
+        android:background="@color/white_alpha60">
 
         <RelativeLayout
             android:layout_width="match_parent"

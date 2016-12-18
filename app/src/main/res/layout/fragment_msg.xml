@@ -1,13 +1,26 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.wurq.dex.mrandroid.mainpage.MsgFragment">
+             android:background="@color/white_alpha60"
+             android:layout_height="wrap_content" >
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text="@string/hello_blank_fragment"/>-->
+
+    <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/rv_msg_container"-->
+        <!--android:divider="#ffff0000"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"/> android:divider="#ffff0000"-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_msg_container"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:layout_weight="1"/>
 
 </FrameLayout>
