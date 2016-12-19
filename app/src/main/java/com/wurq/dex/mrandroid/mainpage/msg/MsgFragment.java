@@ -1,8 +1,12 @@
 package com.wurq.dex.mrandroid.mainpage.msg;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +28,7 @@ import java.util.List;
  * Use the {@link MsgFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MsgFragment extends Fragment {
+public class MsgFragment extends Fragment implements ServiceConnection {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,6 +37,8 @@ public class MsgFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private MsgService mMsgService;
 
     private OnFragmentInteractionListener mListener;
 
@@ -90,12 +96,28 @@ public class MsgFragment extends Fragment {
             mDatas.add("test1");
             mDatas.add("test2");
 
-            mAdapter = new MsgAdapter(mRootView.getContext(), mDatas);
+            mAdapter = new MsgAdapter(mRootView.getContext(), MsgData.ITEMS);
             mRecyclerView.setAdapter(mAdapter);
 
             mRecyclerView.setLayoutManager(new LinearLayoutManager(mRootView.getContext()));
         }
         return mRootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Intent bindIntent = new Intent(this.getActivity(),MsgService.class);
+        this.getActivity().bindService(bindIntent,  this,Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(mMsgService != null)  {
+            mMsgService.setCallback(null);
+            getActivity().unbindService(this);
+        }
     }
 
 //    private void initContentView() {
@@ -136,4 +158,13 @@ public class MsgFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mMsgService = ((MsgService.MsgBinder)service).getService();
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        mMsgService = null;
+    }
 }

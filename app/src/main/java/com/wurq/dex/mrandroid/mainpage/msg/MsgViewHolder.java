@@ -12,11 +12,13 @@ import com.wurq.dex.mrandroid.R;
 class MsgViewHolder extends RecyclerView.ViewHolder
 {
 
-    TextView tv;
+     TextView tv_num;
+     TextView tv_msg;
 
     public MsgViewHolder(View view)
     {
         super(view);
-        tv = (TextView) view.findViewById(R.id.id_num);
+        tv_num = (TextView) view.findViewById(R.id.mob_num);
+        tv_msg = (TextView) view.findViewById(R.id.mob_msg);
     }
 }

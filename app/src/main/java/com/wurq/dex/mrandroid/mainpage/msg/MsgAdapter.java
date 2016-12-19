@@ -14,11 +14,11 @@ import java.util.List;
  */
 public class MsgAdapter extends RecyclerView.Adapter<MsgViewHolder> {
     //定义一个集合，接收从Activity中传递过来的数据和上下文
-    private List<String> mList;
+    private List<MsgData.DataItem> mList;
     private Context mContext;
 
 
-    MsgAdapter(Context context, List<String> list){
+    MsgAdapter(Context context, List<MsgData.DataItem> list){
         this.mContext = context;
         this.mList = list;
     }
@@ -35,8 +35,8 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgViewHolder> {
     @Override
     public void onBindViewHolder(MsgViewHolder holder, int position)
     {
-        final String itemText = mList.get(position);
-        holder.tv.setText(itemText);
+        final MsgData.DataItem itemText = mList.get(position);
+        holder.tv_num.setText(itemText.id);
     }
 
     @Override
