@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,9 +29,8 @@ import java.util.List;
  * Use the {@link MsgFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MsgFragment extends Fragment implements ServiceConnection {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+public class MsgFragment extends Fragment implements ServiceConnection,MsgService.Callback {
+    private static final String TAG = "MsgFragment";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -108,7 +108,10 @@ public class MsgFragment extends Fragment implements ServiceConnection {
     public void onResume() {
         super.onResume();
         Intent bindIntent = new Intent(this.getActivity(),MsgService.class);
+
         this.getActivity().bindService(bindIntent,  this,Context.BIND_AUTO_CREATE);
+
+
     }
 
     @Override
@@ -161,10 +164,23 @@ public class MsgFragment extends Fragment implements ServiceConnection {
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         mMsgService = ((MsgService.MsgBinder)service).getService();
+        mMsgService.setCallback(this);
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
         mMsgService = null;
+    }
+
+    // Service.Callback
+    @Override
+    public void onOperationProgress(int progress) {
+        Log.d(TAG,"onOperationProgress entering");
+    }
+
+    @Override
+    public void onOperationCompletion() {
+        Log.d(TAG,"onOperationCompletion entering");
+        mAdapter.notifyDataSetChanged();
     }
 }
