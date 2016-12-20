@@ -16,6 +16,7 @@ import com.wurq.dex.base.AppProfile;
 import com.wurq.dex.base.view.FragmentTabHost;
 import com.wurq.dex.mrandroid.R;
 import com.wurq.dex.mrandroid.mainpage.msg.MsgFragment;
+import com.wurq.dex.mrandroid.mainpage.msglistner.MsgListnerFragment;
 import com.wurq.dex.mrandroid.mainpage.txun.TxunFragment;
 
 public class MainPageActivity extends AppCompatActivity implements TabHost.OnTabChangeListener,
@@ -41,7 +42,7 @@ public class MainPageActivity extends AppCompatActivity implements TabHost.OnTab
 
 
     private Class mFragmentClasses[] = {
-            MsgFragment.class,
+            MsgListnerFragment.class,
             TxunFragment.class,
             MsgFragment.class,
     };

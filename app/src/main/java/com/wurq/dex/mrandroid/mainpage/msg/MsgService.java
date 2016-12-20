@@ -182,5 +182,10 @@ public class MsgService extends Service {
         }
         ///////////
 
+
+        public void getDeleteSms( )  {
+
+        }
+
     }
 }
