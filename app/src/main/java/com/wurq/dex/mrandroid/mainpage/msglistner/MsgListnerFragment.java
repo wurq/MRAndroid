@@ -1,8 +1,12 @@
 package com.wurq.dex.mrandroid.mainpage.msglistner;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +28,7 @@ import java.util.List;
  * Use the {@link MsgListnerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MsgListnerFragment extends Fragment {
+public class MsgListnerFragment extends Fragment implements ServiceConnection{
     private static final String TAG = "MsgListnerFragment";
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,6 +39,8 @@ public class MsgListnerFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    MsgIPCAidlInterface mService;
 
     private List<String> mDatas = new ArrayList<String>() ;
 
@@ -70,6 +76,31 @@ public class MsgListnerFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Intent bindIntent = new Intent(this.getActivity(),MsgListnerService.class);
+//        getActivity().startService(bindIntent);
+        this.getActivity().bindService(bindIntent,  this,Context.BIND_AUTO_CREATE);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(mService != null)  {
+//            mMsService.setCallback(null);
+//            getActivity().unbindService(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        Intent innerIntent = new Intent(this.getActivity(), MsgListnerService.class);
+//        getActivity().startService(innerIntent);
     }
 
     @Override
@@ -120,6 +151,16 @@ public class MsgListnerFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mService = MsgIPCAidlInterface.Stub.asInterface(service);
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+
     }
 
 //    /**

@@ -2,8 +2,8 @@
 <manifest package="com.wurq.dex.mrandroid"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.RECEIVE_SMS" ></uses-permission>
-    <uses-permission android:name="android.permission.READ_SMS" ></uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.READ_SMS"/>
 
     <application
         android:name=".MRApplication"
@@ -28,7 +28,16 @@
         <service
             android:name=".mainpage.msg.MsgService"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            >
+        </service>
+        <service
+            android:name=".mainpage.msglistner.MsgListnerService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote"
+            android:persistent="true"
+            android:finishOnTaskLaunch="true">
         </service>
     </application>
 

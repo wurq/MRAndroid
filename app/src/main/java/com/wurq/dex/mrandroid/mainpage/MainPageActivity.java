@@ -61,8 +61,6 @@ public class MainPageActivity extends AppCompatActivity implements TabHost.OnTab
         super.onResume();
     }
 
-
-
     private void initContentView() {
 
         fragmentTabHost = (FragmentTabHost) findViewById(R.id.tabhost);
