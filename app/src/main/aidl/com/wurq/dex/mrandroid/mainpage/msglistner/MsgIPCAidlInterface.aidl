@@ -7,6 +7,8 @@ package com.wurq.dex.mrandroid.mainpage.msglistner;
 //
 import com.wurq.dex.mrandroid.mainpage.msglistner.MsgRemote;
 
+import com.wurq.dex.mrandroid.mainpage.msglistner.OnNewMsgArriveListener;
+
 interface MsgIPCAidlInterface {
     /**
      * Demonstrates some basic types that you can use as parameters
@@ -16,4 +18,8 @@ interface MsgIPCAidlInterface {
             double aDouble, String aString);
 
     List<MsgRemote> getMsgList();
+
+    void registerListener(OnNewMsgArriveListener listener);
+
+    void unRegisterListener(OnNewMsgArriveListener listener);
 }

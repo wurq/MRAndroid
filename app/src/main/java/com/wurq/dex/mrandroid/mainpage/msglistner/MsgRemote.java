@@ -10,7 +10,7 @@ public class MsgRemote implements Parcelable{
     public int mId;
     public String mContent;
 
-    protected MsgRemote(int id,String content) {
+    public MsgRemote(int id,String content) {
         mId = id;
         mContent = content;
     }

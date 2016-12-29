@@ -81,7 +81,9 @@ public class MsgService extends Service {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            mCallback.onOperationCompletion();
+            if(mCallback != null)  {
+                mCallback.onOperationCompletion();
+            }
         }
 
         /**

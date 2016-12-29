@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,8 @@ import android.view.ViewGroup;
 
 import com.wurq.dex.mrandroid.R;
 import com.wurq.dex.mrandroid.mainpage.OnFragmentInteractionListener;
+import com.wurq.dex.mrandroid.mainpage.msglistner.msgHandle.SmsHandler;
+import com.wurq.dex.mrandroid.mainpage.msglistner.msgHandle.SmsObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +51,10 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
     private RecyclerView mRecyclerView;
     private MsgListnerAdapter mAdapter;
 
+
+    private Handler mSMShandler = new SmsHandler(getActivity());
+    private SmsObserver mObserver;
+
     public MsgListnerFragment() {
         // Required empty public constructor
     }
@@ -59,7 +67,6 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
      * @param param2 Parameter 2.
      * @return A new instance of fragment MsgListnerFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static MsgListnerFragment newInstance(String param1, String param2) {
         MsgListnerFragment fragment = new MsgListnerFragment();
         Bundle args = new Bundle();
@@ -76,6 +83,13 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+//        Log.d(TAG,"Start SmsObserver ContentResolver");
+//        ContentResolver resolver = getActivity().getContentResolver();
+//        Log.d(TAG,"SmsObserver get ContentResolver");
+//
+//        mObserver = new SmsObserver(resolver, mSMShandler );
+//        resolver.registerContentObserver(Uri.parse("content://sms"), true,mObserver);
     }
 
     @Override
@@ -107,19 +121,15 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_msg_listner, container, false);
-        // Inflate the layout for this fragment
         View mRootView =  inflater.inflate(R.layout.fragment_msg_listner, container, false);
 
         View view =  mRootView.findViewById(R.id.rv_msg_listner_container);
         if (view instanceof RecyclerView) {
-
             mRecyclerView = (RecyclerView) view;
 
 //        mRecyclerView.setHasFixedSize(true);
-
-            mDatas.add("test1");
-            mDatas.add("test2");
+//            mDatas.add("test1");
+//            mDatas.add("test2");
 
             mAdapter = new MsgListnerAdapter(mRootView.getContext(),mDatas);
             mRecyclerView.setAdapter(mAdapter);
@@ -129,7 +139,6 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
         return mRootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -156,6 +165,16 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         mService = MsgIPCAidlInterface.Stub.asInterface(service);
+        try {
+            List<MsgRemote> mros = mService.getMsgList();//
+            for (MsgRemote mro:mros) {
+                mDatas.add(mro.mContent);
+            }
+//            mDatas.add(mro.get(0).mContent);
+//            mDatas.add(mro.get(1).mContent);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -163,18 +182,4 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
 
     }
 
-//    /**
-//     * This interface must be implemented by activities that contain this
-//     * fragment to allow an interaction in this fragment to be communicated
-//     * to the activity and potentially other fragments contained in that
-//     * activity.
-//     * <p/>
-//     * See the Android Training lesson <a href=
-//     * "http://developer.android.com/training/basics/fragments/communicating.html"
-//     * >Communicating with Other Fragments</a> for more information.
-//     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
 }

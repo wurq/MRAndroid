@@ -19,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".mainpage.MainPageActivity"
             android:launchMode="singleTask"
@@ -31,6 +32,7 @@
             android:exported="true"
             >
         </service>
+
         <service
             android:name=".mainpage.msglistner.MsgListnerService"
             android:enabled="true"
