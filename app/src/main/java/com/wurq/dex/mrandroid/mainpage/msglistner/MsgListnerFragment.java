@@ -6,20 +6,18 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.wurq.dex.mrandroid.R;
 import com.wurq.dex.mrandroid.mainpage.OnFragmentInteractionListener;
-import com.wurq.dex.mrandroid.mainpage.msglistner.msgHandle.SmsHandler;
-import com.wurq.dex.mrandroid.mainpage.msglistner.msgHandle.SmsObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,6 @@ import java.util.List;
  */
 public class MsgListnerFragment extends Fragment implements ServiceConnection{
     private static final String TAG = "MsgListnerFragment";
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -50,10 +47,6 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
 
     private RecyclerView mRecyclerView;
     private MsgListnerAdapter mAdapter;
-
-
-    private Handler mSMShandler = new SmsHandler(getActivity());
-    private SmsObserver mObserver;
 
     public MsgListnerFragment() {
         // Required empty public constructor
@@ -79,22 +72,17 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG,"onCreate entering...");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-//        Log.d(TAG,"Start SmsObserver ContentResolver");
-//        ContentResolver resolver = getActivity().getContentResolver();
-//        Log.d(TAG,"SmsObserver get ContentResolver");
-//
-//        mObserver = new SmsObserver(resolver, mSMShandler );
-//        resolver.registerContentObserver(Uri.parse("content://sms"), true,mObserver);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG,"onResume entering...");
         Intent bindIntent = new Intent(this.getActivity(),MsgListnerService.class);
 //        getActivity().startService(bindIntent);
         this.getActivity().bindService(bindIntent,  this,Context.BIND_AUTO_CREATE);
@@ -112,9 +100,17 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+
+        Log.d(TAG,"onDestroy entering  2...");
 //        Intent innerIntent = new Intent(this.getActivity(), MsgListnerService.class);
 //        getActivity().startService(innerIntent);
+        if(mService != null)  {
+            Log.d(TAG,"onDestroy ---  unbindService...");
+//            mMsService.setCallback(null);
+            getActivity().unbindService(this);
+        }
+        Log.d(TAG,"onDestroy super.onDestroy...");
+        super.onDestroy();
     }
 
     @Override
@@ -143,11 +139,23 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+
+//        RealSubject real = new RealSubject();
+//        Subject proxySubject = (Subject) Proxy.newProxyInstance(Subject.class.getClassLoader(),
+//                new Class[]{Subject.class},
+//                new ProxyHandler(real));
+
+//        try {
+//            ServerSocketChannel serverChannel = ServerSocketChannel.open();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.d(TAG,"onAttach entering...");
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -164,6 +172,7 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
+        Log.d(TAG,"MsgListnerFragment onServiceConnected entering...");
         mService = MsgIPCAidlInterface.Stub.asInterface(service);
         try {
             List<MsgRemote> mros = mService.getMsgList();//
@@ -179,7 +188,9 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-
+        Log.d(TAG,"MsgListnerFragment onServiceDisconnected entering...");
+        Intent bindIntent = new Intent(this.getActivity(),MsgListnerService.class);
+        getActivity().unbindService(this);
     }
 
 }

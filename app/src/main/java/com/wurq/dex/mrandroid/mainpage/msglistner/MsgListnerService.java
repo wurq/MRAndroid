@@ -1,5 +1,6 @@
 package com.wurq.dex.mrandroid.mainpage.msglistner;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -14,6 +15,7 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.telephony.SmsMessage;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.wurq.dex.mrandroid.mainpage.msglistner.msgHandle.SmsHandler;
 import com.wurq.dex.mrandroid.mainpage.msglistner.msgHandle.SmsObserver;
@@ -47,6 +49,7 @@ public class MsgListnerService extends Service {
         @Override
         public void registerListener(OnNewMsgArriveListener listener) throws RemoteException{
             mListenerList.register(listener);
+
 //            if(!mListenerList.contains(listener))  {
 //                mListenerList.add(listener);
 //            }  else {
@@ -57,6 +60,7 @@ public class MsgListnerService extends Service {
         @Override
         public void unRegisterListener(OnNewMsgArriveListener listener)  throws RemoteException{
             mListenerList.unregister(listener);
+
 //            if(mListenerList.contains(listener))  {
 //                mListenerList.remove(listener);
 //            }  else {
@@ -92,9 +96,13 @@ public class MsgListnerService extends Service {
     public void onCreate( )  {
         super.onCreate();
 
-        mMsgRemotelist.add(new MsgRemote(1,"servicetest1"));
-        mMsgRemotelist.add(new MsgRemote(2,"servicetest2"));
+        mMsgRemotelist.add(new MsgRemote(1,"service test 1"));
+        mMsgRemotelist.add(new MsgRemote(2,"service test 2"));
 
+        Log.d(TAG, "Process.myPid = "+String.valueOf(android.os.Process.myPid( )));
+        Log.d(TAG, "Process.myPid = "+String.valueOf(getApplicationContext()));
+        Log.d(TAG,TAG+"startForeground");
+        this.startForeground(0,new Notification());
 //        monitorBroadcastReceiverMsg( );
 
         // 在这里启动
@@ -121,6 +129,8 @@ public class MsgListnerService extends Service {
         }
 
         mListenerList.finishBroadcast();
+
+
 //        for(OnNewMsgArriveListener newMsgArriveListener:mListenerList)  {
 //            newMsgArriveListener.OnNewMsgArrived(msgRemote);
 //        }
@@ -146,7 +156,10 @@ public class MsgListnerService extends Service {
                 Log.e(TAG,"SMSReceiver, isOrderedBroadcast()="+ isOrderedBroadcast()+"");
                 Log.e(TAG,"SMSReceiver onReceive..."+ "accept message excute......");
                 String action = intent.getAction();
-                if (SMS_RECEIVED_ACTION.equals(action) || SMS_DELIVER_ACTION.equals(action)) {
+                Toast.makeText(MsgListnerService.this,"show get Broadcast reciever done",Toast.LENGTH_LONG);
+                if (SMS_RECEIVED_ACTION.equals(action) || SMS_DELIVER_ACTION.equals(action)
+                        ||(Intent.ACTION_SCREEN_ON.equals(action))||(Intent.ACTION_SCREEN_OFF.equals(action)))
+                {
 //                    Toast.makeText(context, "开始接收短信.....", Toast.LENGTH_LONG).show();
 
                     Bundle bundle = intent.getExtras();
@@ -191,7 +204,9 @@ public class MsgListnerService extends Service {
             }
         };
 
-        IntentFilter intentFilter = new IntentFilter(SMS_RECEIVED_ACTION);
+        IntentFilter intentFilter = new IntentFilter();
+//        intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+//        intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.setPriority(999);
         registerReceiver(msgBroadcastReceiver,intentFilter);
     }
