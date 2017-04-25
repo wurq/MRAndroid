@@ -17,6 +17,7 @@ import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.wurq.dex.mrandroid.mainpage.db.MmssmsDb;
 import com.wurq.dex.mrandroid.mainpage.msglistner.msgHandle.SmsHandler;
 import com.wurq.dex.mrandroid.mainpage.msglistner.msgHandle.SmsObserver;
 
@@ -97,10 +98,11 @@ public class MsgListnerService extends Service {
         super.onCreate();
 
         mMsgRemotelist.add(new MsgRemote(1,"service test 1"));
-        mMsgRemotelist.add(new MsgRemote(2,"service test 2"));
+        MmssmsDb.getInstance().getMaxId();
+        mMsgRemotelist.add(new MsgRemote(2,String.valueOf(MmssmsDb.getInstance().getMaxId())));
 
         Log.d(TAG, "Process.myPid = "+String.valueOf(android.os.Process.myPid( )));
-        Log.d(TAG, "Process.myPid = "+String.valueOf(getApplicationContext()));
+        Log.d(TAG, "Process.context = "+String.valueOf(getApplicationContext()));
         Log.d(TAG,TAG+"startForeground");
         this.startForeground(0,new Notification());
 //        monitorBroadcastReceiverMsg( );

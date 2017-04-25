@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 
 import com.wurq.dex.mrandroid.R;
 import com.wurq.dex.mrandroid.mainpage.OnFragmentInteractionListener;
+import com.wurq.dex.mrandroid.mainpage.db.MmssmsDb;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,12 +174,15 @@ public class MsgListnerFragment extends Fragment implements ServiceConnection{
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         Log.d(TAG,"MsgListnerFragment onServiceConnected entering...");
+        mDatas.add(String.valueOf(MmssmsDb.getInstance(getContext()).getMaxId()));
+
         mService = MsgIPCAidlInterface.Stub.asInterface(service);
         try {
             List<MsgRemote> mros = mService.getMsgList();//
             for (MsgRemote mro:mros) {
                 mDatas.add(mro.mContent);
             }
+//            mDatas.add(String.valueOf(MmssmsDb.getInstance().getMaxId()));
 //            mDatas.add(mro.get(0).mContent);
 //            mDatas.add(mro.get(1).mContent);
         } catch (RemoteException e) {

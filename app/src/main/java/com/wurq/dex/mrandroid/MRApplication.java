@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.wurq.dex.base.AppProfile;
+import com.wurq.dex.base.CrashHandlerL;
 import com.wurq.dex.mrandroid.mainpage.msglistner.MsgListnerService;
 
 /**
@@ -24,7 +25,7 @@ public class MRApplication extends Application {
 
         //崩溃捕获以及日志输出配置
         if (BuildConfig.DEBUG) {
-//            CrashHandlerL.getInstance().init(context);//debug状态下使用本地崩溃捕获
+            CrashHandlerL.getInstance().init(context);//debug状态下使用本地崩溃捕获
 
         } else {
             // crash

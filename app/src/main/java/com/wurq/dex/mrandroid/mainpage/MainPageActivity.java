@@ -61,6 +61,11 @@ public class MainPageActivity extends AppCompatActivity implements TabHost.OnTab
         super.onResume();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     private void initContentView() {
 
         fragmentTabHost = (FragmentTabHost) findViewById(R.id.tabhost);
